@@ -29,16 +29,19 @@ app.post('/api/login', async (req, res) => {
 app.get('/api/pdf/:id', async (req, res) => {
   const { id }  = req.params;
   const { ref } = req.query;
-  const token   = req.headers.authorization;
+  // Aceita token via header customizado (sem depender do formato do Authorization)
+  const rawToken = req.headers['x-lw-token'] || req.headers.authorization || '';
+  // Garante formato "Bearer <token>" independente do que o cliente enviou
+  const token = rawToken.replace(/^bearer\s+/i, '');
 
   if (!token || !ref)
-    return res.status(400).json({ error: 'Parâmetros obrigatórios: ref e Authorization' });
+    return res.status(400).json({ error: 'Parâmetros obrigatórios: ref e X-LW-Token' });
 
   try {
     const r = await axios.get(
       `https://api.lwtecnologia.com.br/api/imagensPdf/${encodeURIComponent(id)}?referencias=${encodeURIComponent(ref)}`,
       {
-        headers:        { Authorization: token },
+        headers:        { Authorization: `Bearer ${token}` },
         responseType:   'arraybuffer',
         timeout:        30_000,
         validateStatus: () => true,

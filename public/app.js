@@ -239,7 +239,7 @@ async function startDownload() {
 
       try {
         const res = await fetch(`/api/pdf/${encodeURIComponent(id)}?ref=${encodeURIComponent(ref)}`, {
-          headers: { Authorization: `Bearer ${bearerToken}` },
+          headers: { 'X-LW-Token': bearerToken },
           signal:  abortCtrl.signal,
         });
 
