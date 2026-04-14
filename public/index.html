@@ -179,32 +179,12 @@
         </div>
       </div>
 
-      <!-- Arquivos Salvos -->
-      <div class="card" id="filesCard" style="display:none">
-        <div class="card-header">
-          <span class="card-title">Arquivos Salvos</span>
-          <div class="header-btns">
-            <button class="btn-link" id="zipAllBtn">ZIP completo</button>
-            <button class="btn-link" id="refreshFilesBtn">Atualizar</button>
-          </div>
-        </div>
-        <div class="card-body no-pad" id="filesBody">
-          <div class="empty-state">Nenhum arquivo ainda.</div>
-        </div>
-      </div>
 
     </div>
   </div>
 
   <!-- ── Ação Central ───────────────────────────────────────────── -->
   <div class="action-bar">
-    <button class="btn btn-zip" id="zipBtn" style="display:none">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-        <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      Baixar ZIP
-    </button>
     <button class="btn btn-action" id="downloadBtn" disabled>Iniciar Download</button>
   </div>
 
@@ -212,6 +192,7 @@
     Processamento local — as credenciais não são armazenadas em disco
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
