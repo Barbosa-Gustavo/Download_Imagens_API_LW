@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Imagens PDF — LW Tecnologia</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── Header ───────────────────────────────────────────────── -->
+  <header class="app-header">
+    <div class="header-brand">
+      <h1>Download Imagens PDF</h1>
+      <span class="header-sub">API LW Tecnologia</span>
+    </div>
+    <div class="header-actions">
+      <span class="auth-pill" id="authPill" title="Não autenticado">
+        <span class="auth-dot"></span>
+        <span id="authPillLabel">Não autenticado</span>
+      </span>
+      <button class="icon-btn" id="themeToggle" title="Alternar tema">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Layout ────────────────────────────────────────────────── -->
+  <div class="app-layout">
+
+    <!-- ── Painel Esquerdo ───────────────────────────────────── -->
+    <div class="left-panel">
+
+      <!-- Autenticação -->
+      <div class="card" id="authCard">
+        <div class="card-header">
+          <span class="card-title">Autenticação</span>
+          <button class="btn-link" id="authToggleBtn" style="display:none">Editar</button>
+        </div>
+        <div class="card-body" id="authBody">
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label">Login (e-mail LW)</label>
+              <input class="field-input" type="email" id="loginInput"
+                     placeholder="seunome@lwtecnologia.com.br">
+            </div>
+            <div class="field">
+              <label class="field-label">Senha de Rede</label>
+              <input class="field-input" type="password" id="senhaInput"
+                     placeholder="••••••••">
+            </div>
+          </div>
+          <div class="auth-footer">
+            <button class="btn btn-primary" id="loginBtn">Autenticar</button>
+            <span class="hint" id="authHint"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- IDs das Multas -->
+      <div class="card" id="idsCard">
+        <div class="card-header">
+          <span class="card-title">IDs das Multas</span>
+          <span class="badge" id="idsBadge">0 IDs</span>
+        </div>
+        <div class="card-body">
+          <textarea class="field-textarea" id="idsInput"
+            placeholder="Um ID por linha ou separados por vírgula:&#10;26518224&#10;26518225&#10;26518226"></textarea>
+        </div>
+      </div>
+
+      <!-- Progresso (oculto até iniciar) -->
+      <div class="card" id="progressCard" style="display:none">
+        <div class="card-header">
+          <span class="card-title">Progresso</span>
+          <span class="timer" id="timerDisplay">00:00</span>
+        </div>
+        <div class="card-body">
+          <div class="progress-track">
+            <div class="progress-fill" id="progressBar" style="width:0%"></div>
+          </div>
+          <div class="progress-meta">
+            <span id="progressText">0 / 0</span>
+            <span class="ok-count" id="statOk">0 ok</span>
+            <span class="err-count" id="statErr">0 erro</span>
+          </div>
+          <div class="current-label" id="currentLabel"></div>
+          <div class="log-box" id="logBox"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Painel Direito ────────────────────────────────────── -->
+    <div class="right-panel">
+
+      <!-- Referências -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Referências</span>
+          <button class="btn-link" id="selectAllRefs">Todas</button>
+        </div>
+        <div class="card-body no-pad">
+          <table class="ref-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>REF</th>
+                <th>DESCRIÇÃO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="ref-row">
+                <td><input type="checkbox" class="ref-cb" value="RI"></td>
+                <td><span class="ref-code">RI</span></td>
+                <td class="ref-desc">Resumo da Infração</td>
+              </tr>
+              <tr class="ref-row">
+                <td><input type="checkbox" class="ref-cb" value="N"></td>
+                <td><span class="ref-code">N</span></td>
+                <td class="ref-desc">Notificação</td>
+              </tr>
+              <tr class="ref-row">
+                <td><input type="checkbox" class="ref-cb" value="I"></td>
+                <td><span class="ref-code">I</span></td>
+                <td class="ref-desc">Boleto</td>
+              </tr>
+              <tr class="ref-row">
+                <td><input type="checkbox" class="ref-cb" value="NS" checked></td>
+                <td><span class="ref-code">NS</span></td>
+                <td class="ref-desc">Genérica</td>
+              </tr>
+              <tr class="ref-row">
+                <td><input type="checkbox" class="ref-cb" value="EX"></td>
+                <td><span class="ref-code">EX</span></td>
+                <td class="ref-desc">Extrato</td>
+              </tr>
+              <tr class="ref-row">
+                <td><input type="checkbox" class="ref-cb" value="F"></td>
+                <td><span class="ref-code">F</span></td>
+                <td class="ref-desc">Foto</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-body custom-refs-wrap">
+          <label class="field-label">Outras referências</label>
+          <input type="text" class="field-input custom-refs-input" id="customRefsInput"
+                 placeholder="Ex: AB CD — separar por espaço ou vírgula">
+        </div>
+      </div>
+
+      <!-- Configurações -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Configurações</span>
+        </div>
+        <div class="card-body">
+          <div class="setting-row">
+            <label class="field-label">Intervalo entre requisições</label>
+            <span class="delay-val" id="delayLabel">500 ms</span>
+          </div>
+          <input type="range" class="range-input" id="delayInput"
+                 min="200" max="2000" step="100" value="500">
+          <div class="range-hints">
+            <span>200 ms — mínimo</span>
+            <span>2 000 ms — mais seguro</span>
+          </div>
+          <div class="summary-line" id="summaryLine">—</div>
+        </div>
+      </div>
+
+      <!-- Arquivos Salvos -->
+      <div class="card" id="filesCard" style="display:none">
+        <div class="card-header">
+          <span class="card-title">Arquivos Salvos</span>
+          <div class="header-btns">
+            <button class="btn-link" id="zipAllBtn">ZIP completo</button>
+            <button class="btn-link" id="refreshFilesBtn">Atualizar</button>
+          </div>
+        </div>
+        <div class="card-body no-pad" id="filesBody">
+          <div class="empty-state">Nenhum arquivo ainda.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Ação Central ───────────────────────────────────────────── -->
+  <div class="action-bar">
+    <button class="btn btn-zip" id="zipBtn" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Baixar ZIP
+    </button>
+    <button class="btn btn-action" id="downloadBtn" disabled>Iniciar Download</button>
+  </div>
+
+  <footer class="app-footer">
+    Processamento local — as credenciais não são armazenadas em disco
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
